@@ -48,8 +48,8 @@ func (cvs *Canvas) String() string {
 	return repr
 }
 
-func (cvs *Canvas) SetAuthor(author *git.GitAuthor) {
-	cvs.Metadata.Author = author
+func (cvs *Canvas) SetAuthor(name, email string) {
+	cvs.Metadata.Author = &git.GitAuthor{name, email}
 }
 
 func (cvs *Canvas) SetRepository(repoPath string) {

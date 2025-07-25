@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/temaxuck/caca"
-	"github.com/temaxuck/caca/internal/git"
 )
 
 type Date time.Time
 type User struct {
-	author *git.GitAuthor
+	name, email string
+	isSet       bool
 }
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	verbose := flag.Bool("v", false, "Enable verbose mode")
 	preview := flag.Bool("p", false, "Enable preview mode\nWith this option enabled no commits are made")
 	repository := flag.String("repository", ".", "Target repository")
-	user := User{nil}
+	user := User{}
 	flag.Var(&user, "user", "User on behalf of whom to create commits. Format: '<name> <email>'\nIf not specified global config user setting is used")
 	startDate := Date(time.Now())
 	flag.Var(&startDate, "start-date", "Set a start date for the canvas\nYou, probably, want it to be a Sunday")
@@ -51,8 +51,8 @@ func main() {
 		flag.Usage()
 		os.Exit(1)
 	}
-	if user.author != nil {
-		canvas.SetAuthor(user.author)
+	if user.isSet {
+		canvas.SetAuthor(user.name, user.email)
 	}
 	canvas.SetRepository(*repository)
 	startDateTime := time.Time(startDate)
@@ -84,8 +84,8 @@ func (d *Date) Set(value string) error {
 }
 
 func (u *User) String() string {
-	if u.author != nil {
-		return "'" + u.author.Name + " " + u.author.Email + "'"
+	if u.isSet {
+		return u.name + " " + u.email
 	}
 	return "null"
 }
@@ -96,6 +96,7 @@ func (u *User) Set(value string) error {
 		return errors.New("failed to parse user")
 	}
 
-	u.author = &git.GitAuthor{tokens[0], tokens[1]}
+	u.name, u.email = tokens[0], tokens[1]
+	u.isSet = true
 	return nil
 }
