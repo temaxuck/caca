@@ -7,9 +7,7 @@ as a canvas, you can draw over.
 This package provides [library](#api) and [CLI tool](#cli).
 
 ## Canvas file format
-Canvas file is a text file containing a grid, where each element $I_{ij} = \left\{ 0, 1, 2, 3
-\right\}, i \in \left[ 1..7 \right], j \in \left[ 1.. \right]$ gives the contribution intensity level for
-$i$-th day of week of the $j$-th week starting from the start date.
+Canvas file is a text file containing a grid, where each element $I_{ij} \in \{ 0, 1, 2, 3 \}$ with $i \in [1, 7]$ and $j \in \mathbb{N}$, represents the contribution intensity level for $i$-th day of week in the $j$-th week starting from the start date.
 
 ## API
 
