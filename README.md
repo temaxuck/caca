@@ -13,7 +13,7 @@ This package provides [library](#api) and [CLI tool](#cli).
 ## Proof of concept
 
 It is possible to use GitHub Contribution Activity Calendar as a canvas:
-[poc](https://github.com/temaxuck/caca/tree/main/demo/poc.png)
+![poc](https://github.com/temaxuck/caca/blob/main/demo/poc.png?raw=true)
 
 ## Canvas file format
 
@@ -147,7 +147,7 @@ INFO: Starting commits from: 2020-12-27
 $ caca -p canvas.txt
 ```
 This command produces output like this:
-![preview command](https://github.com/temaxuck/caca/tree/main/demo/preview.png)
+![preview command](https://github.com/temaxuck/caca/blob/main/demo/preview.png?raw=true)
 
 4. Set user and repository:
 ```shell
