@@ -91,12 +91,12 @@ func (u *User) String() string {
 }
 
 func (u *User) Set(value string) error {
-	tokens := strings.SplitN(value, " ", 2)
-	if len(tokens) != 2 {
+	tokens := strings.Split(value, " ")
+	if len(tokens) == 1 {
 		return errors.New("failed to parse user")
 	}
 
-	u.name, u.email = tokens[0], tokens[1]
+	u.name, u.email = strings.Join(tokens[:len(tokens)-1], " "), tokens[len(tokens)-1]
 	u.isSet = true
 	return nil
 }
