@@ -48,7 +48,7 @@ func (cvs *Canvas) FlatCanvas() []uint8 {
 	}
 
 	rows := len(cvs.Canvas2D) // weekdays
-	flat := make([]uint8, 0, rows*maxCols)
+	flat := make([]uint8, rows*maxCols, rows*maxCols)
 
 	for col := 0; col < maxCols; col++ {
 		for row := 0; row < rows; row++ {
