@@ -45,11 +45,8 @@ func generateCommitMessage(commitNumber uint8, date time.Time) string {
 }
 
 func logSettings(cvs Canvas) {
-	fmt.Printf(
-		"INFO: Settings:\n\tStarting commits from: %v\n\tTarget repository: %s\n\tAuthor: %s %s\n",
-		cvs.Metadata.StartDate,
-		cvs.Metadata.RepositoryPath,
-		cvs.Metadata.Author.Name,
-		cvs.Metadata.Author.Email,
-	)
+	fmt.Printf("INFO: Canvas settings:\n")
+	fmt.Printf("      Starting commits from: %s\n", cvs.Metadata.StartDate.Format(time.DateOnly))
+	fmt.Printf("      Target repository:     %q\n", cvs.Metadata.RepositoryPath)
+	fmt.Printf("      Author:                \"%s %s\"\n", cvs.Metadata.Author.Name, cvs.Metadata.Author.Email)
 }
