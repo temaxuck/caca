@@ -8,7 +8,6 @@ import (
 )
 
 func (cvs *Canvas) Preview() error {
-	logSettings(*cvs)
 	fmt.Printf("INFO: Canvas preview:\n%s", cvs.String())
 
 	return nil
@@ -19,8 +18,6 @@ func (cvs *Canvas) Draw(verbose bool) error {
 	if err != nil {
 		return err
 	}
-
-	logSettings(*cvs)
 
 	days := cvs.FlatCanvas()
 	currentDate := cvs.Metadata.StartDate
@@ -42,11 +39,4 @@ func (cvs *Canvas) Draw(verbose bool) error {
 
 func generateCommitMessage(commitNumber uint8, date time.Time) string {
 	return fmt.Sprintf("caca: %s[%d] - drawing over contribution calendar", date.Format(time.DateOnly), commitNumber)
-}
-
-func logSettings(cvs Canvas) {
-	fmt.Printf("INFO: Canvas settings:\n")
-	fmt.Printf("      Starting commits from: %s\n", cvs.Metadata.StartDate.Format(time.DateOnly))
-	fmt.Printf("      Target repository:     %q\n", cvs.Metadata.RepositoryPath)
-	fmt.Printf("      Author:                \"%s %s\"\n", cvs.Metadata.Author.Name, cvs.Metadata.Author.Email)
 }
