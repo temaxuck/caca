@@ -120,3 +120,15 @@ func (gs *GitService) StageFiles(files []string) error {
 
 	return nil
 }
+
+func GetGlobalUser() (*GitAuthor, error) {
+	cfg, err := gitConfig.LoadConfig(gitConfig.GlobalScope)
+	if err != nil {
+		return nil, err
+	}
+
+	return &GitAuthor{
+		Name:  cfg.User.Name,
+		Email: cfg.User.Email,
+	}, nil
+}
