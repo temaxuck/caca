@@ -3,6 +3,7 @@ package caca
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -11,9 +12,10 @@ import (
 )
 
 type parser struct {
-	l   *lex.Lexer
-	cvs *Canvas
-	buf []uint8
+	l    *lex.Lexer
+	cvs  *Canvas
+	buf  []uint8
+	path string
 }
 
 // TODO: This is dirty. Come up with a better interface.
@@ -24,8 +26,9 @@ func ParseCanvasFile(path string) (*Canvas, error) {
 	}
 
 	p := parser{
-		l:   &lex.Lexer{Input: string(input)},
-		cvs: NewCanvas(),
+		l:    &lex.Lexer{Input: string(input)},
+		cvs:  NewCanvas(),
+		path: path,
 	}
 
 	for p.l.NextToken() {
@@ -98,7 +101,7 @@ func (p *parser) parseMetadataEntry() error {
 		}
 		p.cvs.SetStartDate(d)
 	case "Repository":
-		r, err := parseRepository(v)
+		r, err := parseRepository(v, p.path)
 		if err != nil {
 			return err
 		}
@@ -123,10 +126,15 @@ func parseDate(s string) (time.Time, error) {
 	return t.Add(time.Hour * 12), err
 }
 
-func parseRepository(s string) (string, error) {
+func parseRepository(s, path string) (string, error) {
 	if len(s) == 0 {
 		return "", fmt.Errorf("repository must be non-empty string: local path or URL")
 	}
+
+	if !filepath.IsAbs(s) {
+		s = filepath.Join(filepath.Dir(path), s)
+	}
+
 	return s, nil
 }
 
