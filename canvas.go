@@ -1,6 +1,7 @@
 package caca
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/temaxuck/caca/colors"
@@ -87,4 +88,12 @@ func (cvs *Canvas) SetRepository(repoPath string) {
 
 func (cvs *Canvas) SetStartDate(date time.Time) {
 	cvs.Metadata.StartDate = date
+}
+
+func (m *CanvasMetadata) String() string {
+	s := fmt.Sprintf("Starting commits from: %s\n", m.StartDate.Format(time.DateOnly))
+	s += fmt.Sprintf("Target repository:     %q\n", m.RepositoryPath)
+	s += fmt.Sprintf("Author:                \"%s %s\"", m.Author.Name, m.Author.Email)
+
+	return s
 }

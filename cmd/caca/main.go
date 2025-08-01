@@ -64,6 +64,8 @@ func main() {
 		canvas.SetAuthor(user.name, user.email)
 	}
 
+	fmt.Printf("INFO: Canvas settings:\n%s\n", canvas.Metadata.String())
+
 	if *preview {
 		if err := canvas.Preview(); err != nil {
 			fmt.Printf("ERROR: %v\n", err)
