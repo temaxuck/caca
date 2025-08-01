@@ -26,7 +26,7 @@ You can also specify metadata:
 2. **Repository** - target repository;
 3. **Author** - user, on behalf of whom to create commits.
 
-See below example for details.
+See example below for details:
 
 ### Example
 
@@ -177,4 +177,4 @@ Feel free to fire off a PR, or open an Issue if you want to report a bug or requ
 
 ## License
 
-This project comes with ISC License, see [LICENSE](#TODO-ADD-LICENSE-LINK) for details.
+This project comes with ISC License, see [LICENSE](https://github.com/temaxuck/caca/blob/main/LICENSE) for details.
