@@ -7,11 +7,25 @@ import (
 	"github.com/temaxuck/caca/internal/git"
 )
 
+func (cvs *Canvas) Preview() error {
+	gs, err := git.NewGitService(cvs.Metadata.RepositoryPath, cvs.Metadata.Author)
+	if err != nil {
+		return err
+	}
+
+	logSettings(*cvs, *gs)
+	fmt.Printf("INFO: Canvas preview:\n%s", cvs.String())
+
+	return nil
+}
+
 func (cvs *Canvas) Draw(verbose bool) error {
 	gs, err := git.NewGitService(cvs.Metadata.RepositoryPath, cvs.Metadata.Author)
 	if err != nil {
 		return err
 	}
+
+	logSettings(*cvs, *gs)
 
 	days := cvs.FlatCanvas()
 	currentDate := cvs.Metadata.StartDate
