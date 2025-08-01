@@ -9,9 +9,9 @@ import (
 )
 
 type GitService struct {
-	r      *git.Repository
-	author *object.Signature
-	wt     *git.Worktree
+	Repository *git.Repository
+	Author     *object.Signature
+	Worktree   *git.Worktree
 }
 
 type GitAuthor struct {
@@ -45,9 +45,9 @@ func NewGitService(repoPath string, author *GitAuthor) (*GitService, error) {
 	}
 
 	return &GitService{
-		author: &_author,
-		r:      repo,
-		wt:     wt,
+		Author:     &_author,
+		Repository: repo,
+		Worktree:   wt,
 	}, nil
 }
 
@@ -71,12 +71,12 @@ func (gs *GitService) CommitEmpty(msg string, date time.Time) (string, error) {
 }
 
 func (gs *GitService) Commit(msg string, date time.Time) (string, error) {
-	gs.author.When = date
-	commitHash, err := gs.wt.Commit(
+	gs.Author.When = date
+	commitHash, err := gs.Worktree.Commit(
 		msg,
 		&git.CommitOptions{
 			AllowEmptyCommits: true,
-			Author:            gs.author,
+			Author:            gs.Author,
 		},
 	)
 
@@ -84,7 +84,7 @@ func (gs *GitService) Commit(msg string, date time.Time) (string, error) {
 }
 
 func (gs *GitService) StagedFiles() ([]string, error) {
-	status, err := gs.wt.Status()
+	status, err := gs.Worktree.Status()
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (gs *GitService) UnstageFiles(files []string) error {
 	if len(files) == 0 {
 		return nil
 	}
-	return gs.wt.Restore(&git.RestoreOptions{
+	return gs.Worktree.Restore(&git.RestoreOptions{
 		Staged: true,
 		Files:  files,
 	})
@@ -113,7 +113,7 @@ func (gs *GitService) UnstageFiles(files []string) error {
 
 func (gs *GitService) StageFiles(files []string) error {
 	for _, file := range files {
-		if _, err := gs.wt.Add(file); err != nil {
+		if _, err := gs.Worktree.Add(file); err != nil {
 			return err
 		}
 	}
