@@ -18,6 +18,22 @@ type Canvas struct {
 	Metadata *CanvasMetadata
 }
 
+func NewCanvas() *Canvas {
+	u, _ := git.GetGlobalUser()
+	if u == nil {
+		u = &git.GitAuthor{}
+	}
+
+	return &Canvas{
+		Canvas2D: make([][]uint8, 0, 7),
+		Metadata: &CanvasMetadata{
+			Author:         u,
+			RepositoryPath: ".",
+			StartDate:      time.Now(),
+		},
+	}
+}
+
 func (cvs *Canvas) FlatCanvas() []uint8 {
 	if len(cvs.Canvas2D) == 0 || len(cvs.Canvas2D[0]) == 0 {
 		return nil

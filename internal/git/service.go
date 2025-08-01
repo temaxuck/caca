@@ -35,17 +35,12 @@ func NewGitService(repoPath string, author *GitAuthor) (*GitService, error) {
 		return nil, err
 	}
 
-	var _author object.Signature
-	if author == nil {
-		_author.Name = cfg.User.Name
-		_author.Email = cfg.User.Email
-	} else {
-		_author.Name = author.Name
-		_author.Email = author.Email
-	}
+	var authorSig object.Signature
+	authorSig.Name = author.Name
+	authorSig.Email = author.Email
 
 	return &GitService{
-		Author:     &_author,
+		author:     &authorSig,
 		Repository: repo,
 		Worktree:   wt,
 	}, nil
