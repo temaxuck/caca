@@ -58,10 +58,8 @@ func main() {
 	startDateTime := time.Time(startDate)
 	canvas.SetStartDate(startDateTime)
 
-	fmt.Printf("INFO: Starting commits from: %v\n", startDate.String())
-
 	if *preview {
-		fmt.Printf("INFO: Canvas preview:\n%s", canvas.String())
+		canvas.Preview()
 		os.Exit(0)
 	}
 
