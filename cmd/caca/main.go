@@ -79,6 +79,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Printf("INFO: Woosh, painting is done!\n")
 }
 
 func (d *Date) String() string {
