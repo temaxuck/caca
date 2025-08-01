@@ -1,6 +1,7 @@
 package git
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/go-git/go-git/v5"
@@ -9,9 +10,9 @@ import (
 )
 
 type GitService struct {
-	Repository *git.Repository
-	Author     *object.Signature
-	Worktree   *git.Worktree
+	author     *object.Signature
+	repository *git.Repository
+	worktree   *git.Worktree
 }
 
 type GitAuthor struct {
@@ -22,11 +23,9 @@ type GitAuthor struct {
 func NewGitService(repoPath string, author *GitAuthor) (*GitService, error) {
 	repo, err := git.PlainOpen(repoPath)
 	if err != nil {
-		return nil, err
-	}
-
-	cfg, err := repo.ConfigScoped(gitConfig.GlobalScope)
-	if err != nil {
+		if err == git.ErrRepositoryNotExists {
+			err = fmt.Errorf("repository %q does not exist", repoPath)
+		}
 		return nil, err
 	}
 
@@ -41,8 +40,8 @@ func NewGitService(repoPath string, author *GitAuthor) (*GitService, error) {
 
 	return &GitService{
 		author:     &authorSig,
-		Repository: repo,
-		Worktree:   wt,
+		repository: repo,
+		worktree:   wt,
 	}, nil
 }
 
@@ -66,12 +65,12 @@ func (gs *GitService) CommitEmpty(msg string, date time.Time) (string, error) {
 }
 
 func (gs *GitService) Commit(msg string, date time.Time) (string, error) {
-	gs.Author.When = date
-	commitHash, err := gs.Worktree.Commit(
+	gs.author.When = date
+	commitHash, err := gs.worktree.Commit(
 		msg,
 		&git.CommitOptions{
 			AllowEmptyCommits: true,
-			Author:            gs.Author,
+			Author:            gs.author,
 		},
 	)
 
@@ -79,7 +78,7 @@ func (gs *GitService) Commit(msg string, date time.Time) (string, error) {
 }
 
 func (gs *GitService) StagedFiles() ([]string, error) {
-	status, err := gs.Worktree.Status()
+	status, err := gs.worktree.Status()
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +99,7 @@ func (gs *GitService) UnstageFiles(files []string) error {
 	if len(files) == 0 {
 		return nil
 	}
-	return gs.Worktree.Restore(&git.RestoreOptions{
+	return gs.worktree.Restore(&git.RestoreOptions{
 		Staged: true,
 		Files:  files,
 	})
@@ -108,7 +107,7 @@ func (gs *GitService) UnstageFiles(files []string) error {
 
 func (gs *GitService) StageFiles(files []string) error {
 	for _, file := range files {
-		if _, err := gs.Worktree.Add(file); err != nil {
+		if _, err := gs.worktree.Add(file); err != nil {
 			return err
 		}
 	}
