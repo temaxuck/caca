@@ -13,11 +13,20 @@ This package provides [library](#api) and [CLI tool](#cli).
 ## Proof of concept
 
 It is possible to use GitHub Contribution Activity Calendar as a canvas:
+
 ![poc](https://github.com/temaxuck/caca/blob/main/demo/poc.png?raw=true)
 
 ## Canvas file format
 
 Canvas file is a text file containing a grid, where each element $I_{ij} \in \{ 0, 1, 2, 3 \}$ with $i \in [1, 7]$ and $j \in \mathbb{N}$, represents the contribution intensity level for $i$-th day of week in the $j$-th week starting from the **start date**.
+
+You can also specify metadata:
+
+1. **Start date** - date of the first commit. Format: YYYY-MM-DD;
+2. **Repository** - target repository;
+3. **Author** - user, on behalf of whom to create commits.
+
+See below example for details.
 
 ### Example
 
@@ -37,6 +46,13 @@ Canvas file is a text file containing a grid, where each element $I_{ij} \in \{ 
 00000000004400000033333333002200000011111111000000000
 00000000000044440033000033000022220011000011000000000
 00000000000000000000000000000000000000000000000000000
+
+# Specify metadata, such as target repository, start date, author, like this:
+# Start date: 2020-12-27
+# Repository: path/to/repo
+# Author: name email@example.com
+
+# It is not necessary to place it below the canvas data. 
 ```
 
 ## API
@@ -147,6 +163,7 @@ INFO: Starting commits from: 2020-12-27
 $ caca -p canvas.txt
 ```
 This command produces output like this:
+
 ![preview command](https://github.com/temaxuck/caca/blob/main/demo/preview.png?raw=true)
 
 4. Set user and repository:
