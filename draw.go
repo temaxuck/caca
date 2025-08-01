@@ -34,3 +34,13 @@ func (cvs *Canvas) Draw(verbose bool) error {
 func generateCommitMessage(commitNumber uint8, date time.Time) string {
 	return fmt.Sprintf("caca: %s[%d] - drawing over contribution calendar", date.Format(time.DateOnly), commitNumber)
 }
+
+func logSettings(cvs Canvas, gs git.GitService) {
+	fmt.Printf(
+		"INFO: Settings:\n\tStarting commits from: %v\n\tTarget repository: %s\n\tAuthor: %s %s\n",
+		cvs.Metadata.StartDate,
+		cvs.Metadata.RepositoryPath,
+		gs.Author.Name,
+		gs.Author.Email,
+	)
+}
