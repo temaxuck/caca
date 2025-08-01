@@ -8,12 +8,7 @@ import (
 )
 
 func (cvs *Canvas) Preview() error {
-	gs, err := git.NewGitService(cvs.Metadata.RepositoryPath, cvs.Metadata.Author)
-	if err != nil {
-		return err
-	}
-
-	logSettings(*cvs, *gs)
+	logSettings(*cvs)
 	fmt.Printf("INFO: Canvas preview:\n%s", cvs.String())
 
 	return nil
@@ -25,7 +20,7 @@ func (cvs *Canvas) Draw(verbose bool) error {
 		return err
 	}
 
-	logSettings(*cvs, *gs)
+	logSettings(*cvs)
 
 	days := cvs.FlatCanvas()
 	currentDate := cvs.Metadata.StartDate
@@ -49,12 +44,12 @@ func generateCommitMessage(commitNumber uint8, date time.Time) string {
 	return fmt.Sprintf("caca: %s[%d] - drawing over contribution calendar", date.Format(time.DateOnly), commitNumber)
 }
 
-func logSettings(cvs Canvas, gs git.GitService) {
+func logSettings(cvs Canvas) {
 	fmt.Printf(
 		"INFO: Settings:\n\tStarting commits from: %v\n\tTarget repository: %s\n\tAuthor: %s %s\n",
 		cvs.Metadata.StartDate,
 		cvs.Metadata.RepositoryPath,
-		gs.Author.Name,
-		gs.Author.Email,
+		cvs.Metadata.Author.Name,
+		cvs.Metadata.Author.Email,
 	)
 }
