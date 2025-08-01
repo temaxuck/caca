@@ -15,16 +15,29 @@ type CanvasMetadata struct {
 
 type Canvas struct {
 	Canvas2D [][]uint8 // Rows: Weekdays, Columns: Number of the week
-	Count    int
-
 	Metadata *CanvasMetadata
 }
 
 func (cvs *Canvas) FlatCanvas() []uint8 {
-	flat := make([]uint8, cvs.Count, cvs.Count)
-	for i := range len(cvs.Canvas2D) {
-		for j := range len(cvs.Canvas2D[i]) {
-			flat[j*len(cvs.Canvas2D)+i] = cvs.Canvas2D[i][j]
+	if len(cvs.Canvas2D) == 0 || len(cvs.Canvas2D[0]) == 0 {
+		return nil
+	}
+
+	maxCols := 0
+	for _, row := range cvs.Canvas2D {
+		if len(row) > maxCols {
+			maxCols = len(row)
+		}
+	}
+
+	rows := len(cvs.Canvas2D) // weekdays
+	flat := make([]uint8, 0, rows*maxCols)
+
+	for col := 0; col < maxCols; col++ {
+		for row := 0; row < rows; row++ {
+			if col < len(cvs.Canvas2D[row]) {
+				flat[col*rows+row] = cvs.Canvas2D[row][col]
+			}
 		}
 	}
 	return flat
